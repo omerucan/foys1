@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<style type="text/css">
+    .ui-row-editor .ui-row-editor-pencil {
+        margin-left: 8px;
+    }
+</style>
+
+<body>
+<h:form id="form">
+    <p:growl id="msgs" showDetail="true"/>
+    <p:commandButton value="Create" icon="pi pi-add" action="#{studentBean.chooseCar}">
+        <p:ajax event="dialogReturn" listener="#{studentBean.onCarChosen}" update="msgs" />
+    </p:commandButton>
+    <p:dataTable var="student" value="#{studentBean.students}" editable="true" style="margin-bottom:20px">
+        <f:facet name="header">
+            Row Editing
+        </f:facet>
+
+        <p:ajax event="rowEdit" listener="#{studentBean.onRowEdit}" update=":form:msgs"/>
+        <p:ajax event="rowEditCancel" listener="#{studentBean.onRowCancel}" update=":form:msgs"/>
+
+        <p:column headerText="Name">
+            <h:outputText value="#{student.name}"/>
+        </p:column>
+
+        <p:column headerText="Surname">
+            <h:outputText value="#{student.surname}"/>
+        </p:column>
+
+        <p:column headerText="Phone Number">
+            <h:outputText value="#{student.phoneNumber}"/>
+        </p:column>
+
+        <p:column headerText="City">
+            <h:outputText value="#{student.city}"/>
+        </p:column>
+
+        <p:column headerText="District">
+            <h:outputText value="#{student.district}"/>
+        </p:column>
+
+        <p:column headerText="Description">
+            <h:outputText value="#{student.description}"/>
+        </p:column>
+    </p:dataTable>
+</h:form>
+</body>
+</html>

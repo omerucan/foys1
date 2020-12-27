@@ -1,6 +1,7 @@
 package tr.com.netas.foys.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import tr.com.netas.foys.dto.StudentDto;
 import tr.com.netas.foys.model.Student;
 import tr.com.netas.foys.repository.StudentRepository;
@@ -8,6 +9,7 @@ import tr.com.netas.foys.repository.StudentRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class StudentService {
 
     @Autowired
@@ -29,4 +31,5 @@ public class StudentService {
         }
         return list;
     }
+
 }
