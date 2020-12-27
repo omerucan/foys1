@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-
+      xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <title>Cars</title>
+    <title>Add Student</title>
     <style type="text/css">
-        .ui-widget {
-            font-size: 90%;
-        }
     </style>
 </h:head>
-
 <h:body>
     <i id="customheader" class="pi pi-home" style="display:none"></i>
-
-    <p:dataTable var="car" value="#{studentBean.students}">
-        <p:column headerText="Id">
-            <h:outputText value="#{car.id}"/>
-        </p:column>
-
-        <p:column headerText="Year">
-            <h:outputText value="#{car.year}"/>
-        </p:column>
-
-        <p:column headerText="Brand">
-            <h:outputText value="#{car.brand}"/>
-        </p:column>
-
-        <p:column headerText="Color">
-            <h:outputText value="#{car.color}"/>
-        </p:column>
-    </p:dataTable>
+    <h:form>
+        <p:panel id="panel" style="margin-bottom:10px;">
+            <p:messages id="messages"/>
+            <h:panelGrid columns="2" cellpadding="5">
+                <h:outputLabel for="name" value="Name: "/>
+                <p:inputText id="name" required="true"/>
+                <h:outputLabel for="surname" value="Surname: "/>
+                <p:inputText id="surname" required="true"/>
+                <h:outputLabel for="phoneNumber" value="Phone Number: "/>
+                <pe:inputPhone id="phoneNumber"
+                               initialCountry="tr"
+                               formatOnDisplay="true">
+                </pe:inputPhone>
+                <p:outputLabel for="city" value="City: "/>
+                <p:selectOneMenu id="city" value="#{dropdownView.city}" style="width:150px">
+                    <p:ajax listener="#{dropdownView.onCityChange}" update="district"/>
+                    <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{dropdownView.cities}"/>
+                </p:selectOneMenu>
+                <p:outputLabel for="district" value="District: "/>
+                <p:selectOneMenu id="district" value="#{dropdownView.district}" style="width:150px">
+                    <f:selectItem itemLabel="Select District" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{dropdownView.districts}"/>
+                </p:selectOneMenu>
+                <h:outputLabel for="description" value="Description: "/>
+                <p:inputText id="description" required="true"/>
+            </h:panelGrid>
+        </p:panel>
+        <p:commandButton value="Submit" update="panel"/>
+    </h:form>
 </h:body>
-
 </html>

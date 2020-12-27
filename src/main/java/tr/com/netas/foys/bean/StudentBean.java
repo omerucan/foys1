@@ -17,7 +17,7 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-@Named("studentBean")
+@Named(value = "studentBean")
 @ViewScoped
 public class StudentBean implements Serializable {
     private List<StudentDto> students;
@@ -58,11 +58,11 @@ public class StudentBean implements Serializable {
     }
 
     public void chooseCar() {
-        Map<String, Object> options = new HashMap<String, Object>();
+        Map<String, Object> options = new HashMap<>();
         options.put("resizable", false);
         options.put("draggable", false);
         options.put("modal", true);
-        PrimeFaces.current().dialog().openDynamic("selectCar", options, null);
+        PrimeFaces.current().dialog().openDynamic("createStudent", options, null);
     }
 
     public void onCarChosen(SelectEvent event) {

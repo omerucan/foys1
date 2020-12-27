@@ -18,7 +18,7 @@
     <p:commandButton value="Create" icon="pi pi-add" action="#{studentBean.chooseCar}">
         <p:ajax event="dialogReturn" listener="#{studentBean.onCarChosen}" update="msgs" />
     </p:commandButton>
-    <p:dataTable var="student" value="#{studentBean.students}" editable="true" style="margin-bottom:20px">
+    <p:dataTable var="student" value="${studentBean.students}" editable="true" style="margin-bottom:20px">
         <f:facet name="header">
             Row Editing
         </f:facet>
