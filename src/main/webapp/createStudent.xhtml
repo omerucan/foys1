@@ -13,32 +13,38 @@
     <h:form>
         <p:panel id="panel" style="margin-bottom:10px;">
             <p:messages id="messages"/>
-            <h:panelGrid columns="2" cellpadding="5">
+            <h:panelGrid columns="2" cellpadding="6">
                 <h:outputLabel for="name" value="Name: "/>
-                <p:inputText id="name" required="true"/>
+                <p:inputText id="name" required="true" style="width:263px" value="#{studentBean.student.name}"/>
                 <h:outputLabel for="surname" value="Surname: "/>
-                <p:inputText id="surname" required="true"/>
+                <p:inputText id="surname" required="true" style="width:263px" value="#{studentBean.student.surName}"/>
                 <h:outputLabel for="phoneNumber" value="Phone Number: "/>
                 <pe:inputPhone id="phoneNumber"
+                               placeholderNumberType="mobile"
                                initialCountry="tr"
+                               value="#{studentBean.student.phoneNumber}"
                                formatOnDisplay="true">
                 </pe:inputPhone>
                 <p:outputLabel for="city" value="City: "/>
-                <p:selectOneMenu id="city" value="#{dropdownView.city}" style="width:150px">
-                    <p:ajax listener="#{dropdownView.onCityChange}" update="district"/>
+                <p:selectOneMenu id="city" style="width:252px" value="#{studentBean.student.city}">
+                    <p:ajax event="itemSelect" listener="#{studentBean.onCityChange}" update="district"/>
                     <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{dropdownView.cities}"/>
+                    <f:selectItems value="#{studentBean.cities}" var="city"
+                                   itemValue="#{city}" itemLabel="#{city.name}"/>
                 </p:selectOneMenu>
                 <p:outputLabel for="district" value="District: "/>
-                <p:selectOneMenu id="district" value="#{dropdownView.district}" style="width:150px">
+                <p:selectOneMenu id="district" style="width:252px" value="#{studentBean.student.district}">
                     <f:selectItem itemLabel="Select District" itemValue="" noSelectionOption="true"/>
-                    <f:selectItems value="#{dropdownView.districts}"/>
+                    <f:selectItems value="#{studentBean.districts}" var="district"
+                                   itemValue="#{district}" itemLabel="#{district.name}"/>
                 </p:selectOneMenu>
                 <h:outputLabel for="description" value="Description: "/>
-                <p:inputText id="description" required="true"/>
+                <p:inputText id="description" required="true" style="width:263px"/>
             </h:panelGrid>
         </p:panel>
-        <p:commandButton value="Submit" update="panel"/>
+        <p:commandButton value="Submit" id="ajax" update="panel" action="#{studentBean.saveStudent}"
+                         style="margin-right:20px;" styleClass="ui-priority-primary"/>
+
     </h:form>
 </h:body>
 </html>
