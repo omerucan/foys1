@@ -2,6 +2,7 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://primefaces.org/ui">
 <h:head>
 
@@ -15,16 +16,32 @@
 <body>
 <h:form id="form">
     <p:growl id="msgs" showDetail="true"/>
-    <p:commandButton value="Create" icon="pi pi-add" action="#{studentBean.chooseCar}">
-        <p:ajax event="dialogReturn" listener="#{studentBean.onCarChosen}" update="msgs" />
-    </p:commandButton>
-    <p:dataTable var="student" value="${studentBean.students}" editable="true" style="margin-bottom:20px">
+
+    <p:dataTable id="datatable" var="student" value="${studentBean.students}" style="margin-bottom:20px"
+                 rows="10" paginator="true"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{studentBean.student}"
+                 rowKey="#{student.id}">
         <f:facet name="header">
-            Row Editing
+            <p:commandButton id="addBtn" value="Create" oncomplete="PF('dlg').show();" icon="fa fa-plus"
+                             action="#{studentBean.showDialog}"/>
+
+            <p:commandButton id="viewBtn" update=":dlgfrmid" icon="fa fa-search" value="View"
+                             action="#{studentBean.editPage}"
+                             oncomplete="PF('dlg').show();"/>
+
+            <p:commandButton id="updateBtn" update=":dlgfrmid" icon="fa fa-pencil" value="Update"
+                             action="#{studentBean.viewPage}"
+                             oncomplete="PF('dlg').show();"/>
+
+            <p:commandButton id="deleteBtn" update=":dlgfrmid" icon="fa fa-trash" value="Delete"
+                             action="#{studentBean.deleteStudent}"/>
         </f:facet>
 
-        <p:ajax event="rowEdit" listener="#{studentBean.onRowEdit}" update=":form:msgs"/>
-        <p:ajax event="rowEditCancel" listener="#{studentBean.onRowCancel}" update=":form:msgs"/>
+        <p:column headerText="Id" visible="false">
+            <h:outputText value="#{student.id}"/>
+        </p:column>
 
         <p:column headerText="Name">
             <h:outputText value="#{student.name}"/>
@@ -51,5 +68,50 @@
         </p:column>
     </p:dataTable>
 </h:form>
+<p:dialog widgetVar="dlg" appendToBody="true" resizable="false;" header="Add Student">
+    <h:form id="dlgfrmid">
+        <p:panel id="panel" style="margin-bottom:10px;">
+            <h:panelGrid columns="2" cellpadding="6">
+                <h:outputLabel for="name" value="Name: "/>
+                <p:inputText id="name" required="true" style="width:263px" value="#{studentBean.student.name}"
+                             disabled="#{!studentBean.isViewPage}"/>
+
+                <h:outputLabel for="surname" value="Surname: "/>
+                <p:inputText id="surname" required="true" style="width:263px" value="#{studentBean.student.surname}"
+                             disabled="#{!studentBean.isViewPage}"/>
+
+                <h:outputLabel for="phoneNumber" value="Phone Number: "/>
+                <pe:inputPhone id="phoneNumber" required="true" disabled="#{!studentBean.isViewPage}"
+                               placeholderNumberType="mobile" placeholder="5012345678" initialCountry="tr"
+                               maxlength="10" value="#{studentBean.student.phoneNumber}" formatOnDisplay="true">
+                </pe:inputPhone>
+
+                <p:outputLabel for="city" value="City: "/>
+                <p:selectOneMenu id="city" style="width:252px" value="#{studentBean.student.city}" required="true"
+                                 disabled="#{!studentBean.isViewPage}">
+                    <p:ajax event="itemSelect" listener="#{studentBean.onCityChange}" update="district"/>
+                    <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{studentBean.cities}" var="city" itemValue="#{city}"
+                                   itemLabel="#{city.name}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel for="district" value="District: "/>
+                <p:selectOneMenu id="district" style="width:252px" value="#{studentBean.student.district}"
+                                 required="true" disabled="#{!studentBean.isViewPage}">
+                    <f:selectItem itemLabel="Select District" itemValue="" noSelectionOption="true"/>
+                    <f:selectItems value="#{studentBean.districts}" var="district" itemValue="#{district}"
+                                   itemLabel="#{district.name}"/>
+                </p:selectOneMenu>
+
+                <h:outputLabel for="description" value="Description: "/>
+                <p:inputText id="description" required="true" style="width:263px" disabled="#{!studentBean.isViewPage}"
+                             value="#{studentBean.student.description}"/>
+            </h:panelGrid>
+        </p:panel>
+        <p:commandButton value="Submit" id="ajax" action="#{studentBean.saveStudent}" style="margin-right:20px;" <!-- todo objeler dolmamaktadır.-->
+                         process="@this" rendered="#{studentBean.isViewPage}" update=":form:datatable"
+                         styleClass="ui-priority-primary"/>  <!--oncomplete="PF('dlg').hide();"-->
+    </h:form>
+</p:dialog>
 </body>
 </html>

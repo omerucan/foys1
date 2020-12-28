@@ -27,9 +27,10 @@ public class StudentService {
     public List<StudentDto> getAll() {
         List<StudentDto> list = new ArrayList<>();
         for (Student s : studentRepository.findAll()) {
-            list.add(new StudentDto(s));
+            if (s.getDeleted() != null && !s.getDeleted()) {
+                list.add(new StudentDto(s));
+            }
         }
         return list;
     }
-
 }

@@ -1,6 +1,8 @@
 package tr.com.netas.foys.dto;
 
 import lombok.*;
+import tr.com.netas.foys.enums.City;
+import tr.com.netas.foys.enums.District;
 import tr.com.netas.foys.model.Student;
 
 @Data
@@ -26,23 +28,28 @@ public class StudentDto {
 
     @Getter
     @Setter
-    private String city;
+    private City city;
 
     @Getter
     @Setter
-    private String district;
+    private District district;
 
     @Getter
     @Setter
     private String description;
+
+    @Getter
+    @Setter
+    private Boolean deleted;
 
     public StudentDto(Student s) {
         this.id = s.getId();
         this.name = s.getName();
         this.surname = s.getSurname();
         this.phoneNumber = s.getPhoneNumber();
-        this.city = s.getCity();
-        this.district = s.getDistrict();
-        this.description = getDescription();
+        this.city = City.valueOf(s.getCity());
+        this.district = District.valueOf(s.getDistrict());
+        this.description = s.getDescription();
+        this.deleted = s.getDeleted();
     }
 }

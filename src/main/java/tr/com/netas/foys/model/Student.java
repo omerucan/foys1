@@ -39,8 +39,9 @@ public class Student extends BaseModel {
         this.name = s.getName();
         this.surname = s.getSurname();
         this.phoneNumber = s.getPhoneNumber();
-        this.city = s.getCity();
-        this.district = s.getDistrict();
-        this.description = getDescription();
+        this.city = s.getCity().name();
+        this.district = s.getDistrict().name();
+        this.description = s.getDescription();
+        this.setDeleted(s.getDeleted());
     }
 }

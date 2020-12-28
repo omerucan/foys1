@@ -1,6 +1,7 @@
 package tr.com.netas.foys.model;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,6 +17,7 @@ public class BaseModel {
 
     @Id
     @Getter
+    @Setter
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "UUID")
     @Column(name = "ID")
@@ -32,10 +34,9 @@ public class BaseModel {
     @Column(name = "CREATED_USER")
     private String createdUser;
 
+    @Getter
+    @Setter
     @Column(name = "DELETED")
     private Boolean deleted;
 
-    protected void setId(String id) {
-        this.id = id;
-    }
 }
