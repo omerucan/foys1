@@ -25,7 +25,7 @@
                  rowKey="#{student.id}">
         <f:facet name="header">
             <p:commandButton id="addBtn" value="Create" oncomplete="PF('dlg').show();" icon="fa fa-plus"
-                             action="#{studentBean.showDialog}"/>
+                             update=":dlgfrmid" action="#{studentBean.showDialog}"/>
 
             <p:commandButton id="viewBtn" update=":dlgfrmid" icon="fa fa-search" value="View"
                              action="#{studentBean.editPage}"
@@ -35,7 +35,7 @@
                              action="#{studentBean.viewPage}"
                              oncomplete="PF('dlg').show();"/>
 
-            <p:commandButton id="deleteBtn" update=":dlgfrmid" icon="fa fa-trash" value="Delete"
+            <p:commandButton id="deleteBtn" update=":form:datatable" icon="fa fa-trash" value="Delete"
                              action="#{studentBean.deleteStudent}"/>
         </f:facet>
 
@@ -71,6 +71,7 @@
 <p:dialog widgetVar="dlg" appendToBody="true" resizable="false;" header="Add Student">
     <h:form id="dlgfrmid">
         <p:panel id="panel" style="margin-bottom:10px;">
+            <p:messages id="msgs1"/>
             <h:panelGrid columns="2" cellpadding="6">
                 <h:outputLabel for="name" value="Name: "/>
                 <p:inputText id="name" required="true" style="width:263px" value="#{studentBean.student.name}"
@@ -87,8 +88,8 @@
                 </pe:inputPhone>
 
                 <p:outputLabel for="city" value="City: "/>
-                <p:selectOneMenu id="city" style="width:252px" value="#{studentBean.student.city}" required="true"
-                                 disabled="#{!studentBean.isViewPage}">
+                <p:selectOneMenu id="city" style="width:252px" value="#{studentBean.student.city}"
+                                 required="true" disabled="#{!studentBean.isViewPage}">
                     <p:ajax event="itemSelect" listener="#{studentBean.onCityChange}" update="district"/>
                     <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="true"/>
                     <f:selectItems value="#{studentBean.cities}" var="city" itemValue="#{city}"
@@ -107,10 +108,11 @@
                 <p:inputText id="description" required="true" style="width:263px" disabled="#{!studentBean.isViewPage}"
                              value="#{studentBean.student.description}"/>
             </h:panelGrid>
+            <p:commandButton value="Submit" id="ajax" action="#{studentBean.saveStudent}" style="margin-right:20px;"
+                             validateClient="true"
+                             process="@this" rendered="#{studentBean.isViewPage}" update="form:datatable panel"
+                             ajax="false" oncomplete="PF('dlg').hide();" styleClass="ui-priority-primary"/>
         </p:panel>
-        <p:commandButton value="Submit" id="ajax" action="#{studentBean.saveStudent}" style="margin-right:20px;" <!-- todo objeler dolmamaktadır.-->
-                         process="@this" rendered="#{studentBean.isViewPage}" update=":form:datatable"
-                         styleClass="ui-priority-primary"/>  <!--oncomplete="PF('dlg').hide();"-->
     </h:form>
 </p:dialog>
 </body>

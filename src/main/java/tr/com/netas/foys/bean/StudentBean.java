@@ -66,7 +66,7 @@ public class StudentBean implements Serializable {
 
     public void onCityChange(SelectEvent event) {
         districts.clear();
-        City city = (City)event.getObject();
+        City city = (City) event.getObject();
         if (city != null) {
             for (District d : District.values()) {
                 if (d.getCityId() == city.getIndex()) {
