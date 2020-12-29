@@ -4,19 +4,10 @@
       xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://primefaces.org/ui">
-<h:head>
-
-</h:head>
-<style type="text/css">
-    .ui-row-editor .ui-row-editor-pencil {
-        margin-left: 8px;
-    }
-</style>
-
+<h:head></h:head>
 <body>
 <h:form id="form">
     <p:growl id="msgs" showDetail="true"/>
-
     <p:dataTable id="datatable" var="student" value="${studentBean.students}" style="margin-bottom:20px"
                  rows="10" paginator="true"
                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -24,18 +15,23 @@
                  rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{studentBean.student}"
                  rowKey="#{student.id}">
         <f:facet name="header">
+            <p:ajax event="rowSelect" listener="#{studentBean.onRowSelect}"
+                    update="datatable:viewBtn, datatable:updateBtn, datatable:deleteBtn"/>
+            <p:ajax event="rowUnselect" listener="#{studentBean.onRowUnselect}"
+                    update="datatable:viewBtn, datatable:updateBtn, datatable:deleteBtn"/>
             <p:commandButton id="addBtn" value="Create" oncomplete="PF('dlg').show();" icon="fa fa-plus"
                              update=":dlgfrmid" action="#{studentBean.showDialog}"/>
 
             <p:commandButton id="viewBtn" update=":dlgfrmid" icon="fa fa-search" value="View"
-                             action="#{studentBean.editPage}"
+                             action="#{studentBean.editPage}" disabled="#{!studentBean.selectedRow}"
                              oncomplete="PF('dlg').show();"/>
 
             <p:commandButton id="updateBtn" update=":dlgfrmid" icon="fa fa-pencil" value="Update"
-                             action="#{studentBean.viewPage}"
+                             action="#{studentBean.viewPage}" disabled="#{!studentBean.selectedRow}"
                              oncomplete="PF('dlg').show();"/>
 
-            <p:commandButton id="deleteBtn" update=":form:datatable" icon="fa fa-trash" value="Delete"
+            <p:commandButton id="deleteBtn" icon="fa fa-trash" value="Delete" disabled="#{!studentBean.selectedRow}"
+                             update="datatable, datatable:viewBtn, datatable:updateBtn, datatable:deleteBtn"
                              action="#{studentBean.deleteStudent}"/>
         </f:facet>
 

@@ -20,10 +20,6 @@ public class StudentService {
         studentRepository.save(s);
     }
 
-    public StudentDto findById(String id) {
-        return new StudentDto(studentRepository.findById(id).get());
-    }
-
     public List<StudentDto> getAll() {
         List<StudentDto> list = new ArrayList<>();
         for (Student s : studentRepository.findAll()) {

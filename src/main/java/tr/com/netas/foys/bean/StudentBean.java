@@ -21,6 +21,7 @@ public class StudentBean implements Serializable {
     private List<District> districts;
     private StudentDto student;
     private boolean isViewPage = false;
+    private boolean selectedRow = false;
 
     @Autowired
     private StudentService studentService;
@@ -39,6 +40,14 @@ public class StudentBean implements Serializable {
 
     public void updateData() {
         students = studentService.getAll();
+    }
+
+    public void onRowSelect() {
+        selectedRow = true;
+    }
+
+    public void onRowUnselect() {
+        selectedRow = false;
     }
 
     public void editPage() {
@@ -62,6 +71,8 @@ public class StudentBean implements Serializable {
     public void deleteStudent() {
         student.setDeleted(Boolean.TRUE);
         studentService.save(student);
+        students.remove(student);
+        selectedRow = false;
     }
 
     public void onCityChange(SelectEvent event) {
@@ -97,7 +108,11 @@ public class StudentBean implements Serializable {
     }
 
     public List<StudentDto> getStudents() {
-        students = studentService.getAll();
+        updateData();
         return students;
+    }
+
+    public boolean isSelectedRow() {
+        return selectedRow;
     }
 }
