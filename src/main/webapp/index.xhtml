@@ -7,26 +7,24 @@
 <h:head></h:head>
 <body>
 <h:form id="form">
-    <p:growl id="msgs" showDetail="true"/>
     <p:dataTable id="datatable" var="student" value="${studentBean.students}" style="margin-bottom:20px"
-                 rows="10" paginator="true"
+                 rows="10" paginator="true" rowKey="#{student.id}"
                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{studentBean.student}"
-                 rowKey="#{student.id}">
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{studentBean.student}">
         <f:facet name="header">
             <p:ajax event="rowSelect" listener="#{studentBean.onRowSelect}"
                     update="datatable:viewBtn, datatable:updateBtn, datatable:deleteBtn"/>
             <p:ajax event="rowUnselect" listener="#{studentBean.onRowUnselect}"
                     update="datatable:viewBtn, datatable:updateBtn, datatable:deleteBtn"/>
             <p:commandButton id="addBtn" value="Create" oncomplete="PF('dlg').show();" icon="fa fa-plus"
-                             update=":dlgfrmid" action="#{studentBean.showDialog}"/>
+                             update=":dlgform" action="#{studentBean.showDialog}"/>
 
-            <p:commandButton id="viewBtn" update=":dlgfrmid" icon="fa fa-search" value="View"
+            <p:commandButton id="viewBtn" update=":dlgform" icon="fa fa-search" value="View"
                              action="#{studentBean.editPage}" disabled="#{!studentBean.selectedRow}"
                              oncomplete="PF('dlg').show();"/>
 
-            <p:commandButton id="updateBtn" update=":dlgfrmid" icon="fa fa-pencil" value="Update"
+            <p:commandButton id="updateBtn" update=":dlgform" icon="fa fa-pencil" value="Update"
                              action="#{studentBean.viewPage}" disabled="#{!studentBean.selectedRow}"
                              oncomplete="PF('dlg').show();"/>
 
@@ -65,7 +63,7 @@
     </p:dataTable>
 </h:form>
 <p:dialog widgetVar="dlg" appendToBody="true" resizable="false;" header="Add Student">
-    <h:form id="dlgfrmid">
+    <h:form id="dlgform">
         <p:panel id="panel" style="margin-bottom:10px;">
             <p:messages id="msgs1"/>
             <h:panelGrid columns="2" cellpadding="6">
