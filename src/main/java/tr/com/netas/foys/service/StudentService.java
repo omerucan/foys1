@@ -3,6 +3,7 @@ package tr.com.netas.foys.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tr.com.netas.foys.dto.StudentDto;
+import tr.com.netas.foys.mapper.StudentMapper;
 import tr.com.netas.foys.model.Student;
 import tr.com.netas.foys.repository.StudentRepository;
 
@@ -14,19 +15,14 @@ public class StudentService {
 
     @Autowired
     StudentRepository studentRepository;
+    @Autowired
+    StudentMapper studentMapper;
 
     public void save(StudentDto studentDto) {
-        Student s = new Student(studentDto);
-        studentRepository.save(s);
+        studentRepository.save(studentMapper.studentDto2Student(studentDto));
     }
 
     public List<StudentDto> getAll() {
-        List<StudentDto> list = new ArrayList<>();
-        for (Student s : studentRepository.findAll()) {
-            if (s.getDeleted() != null && !s.getDeleted()) {
-                list.add(new StudentDto(s));
-            }
-        }
-        return list;
+        return studentMapper.listStudent2StudentDto(studentRepository.findByDeleted(Boolean.FALSE));
     }
 }

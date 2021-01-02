@@ -1,7 +1,6 @@
 package tr.com.netas.foys.model;
 
 import lombok.*;
-import tr.com.netas.foys.dto.StudentDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,15 +32,4 @@ public class Student extends BaseModel {
 
     @Column(name = "DESCRIPTION")
     private String description;
-
-    public Student(StudentDto s) {
-        this.setId(s.getId());
-        this.name = s.getName();
-        this.surname = s.getSurname();
-        this.phoneNumber = s.getPhoneNumber();
-        this.city = s.getCity().name();
-        this.district = s.getDistrict().name();
-        this.description = s.getDescription();
-        this.setDeleted(s.getDeleted());
-    }
 }
